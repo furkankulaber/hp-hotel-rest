@@ -23,3 +23,11 @@ func (r *reviewRepository) CreateReview(review *model.Review) (*model.Review, er
 	}
 	return review, nil
 }
+
+func (repo *reviewRepository) GetReviewsByHotelID(hotelID uint) ([]model.Review, error) {
+	var reviews []model.Review
+	if err := repo.DB.Where("hotel_id = ?", hotelID).Find(&reviews).Error; err != nil {
+		return nil, err
+	}
+	return reviews, nil
+}
