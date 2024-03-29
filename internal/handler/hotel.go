@@ -15,14 +15,6 @@ func NewHotelHandler(service service.HotelService) *HotelHandler {
 	return &HotelHandler{service: service}
 }
 
-func (h *HotelHandler) RegisterRoutes(app *fiber.App) {
-	app.Get("/hotels", h.GetAllHotels)
-	app.Get("/hotels/:id", h.GetHotelByID)
-	app.Post("/hotels", h.CreateHotel)
-	app.Put("/hotels/:id", h.UpdateHotel)
-	app.Delete("/hotels/:id", h.DeleteHotel)
-}
-
 func (h *HotelHandler) GetAllHotels(c *fiber.Ctx) error {
 	hotels, err := h.service.GetAllHotels()
 	if err != nil {

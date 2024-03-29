@@ -43,7 +43,11 @@ func main() {
 	hotelService := service.NewHotelService(hotelRepo)
 	hotelHandler := handler.NewHotelHandler(hotelService)
 
-	router.SetupRoutes(app, hotelHandler)
+	reviewRepo := repository.NewReviewRepository(db)
+	reviewService := service.NewReviewService(reviewRepo)
+	reviewHandler := handler.NewReviewHandler(reviewService)
+
+	router.SetupRoutes(app, hotelHandler, reviewHandler)
 
 	log.Fatal(app.Listen(":8080"))
 }

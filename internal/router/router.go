@@ -5,13 +5,13 @@ import (
 	"hp-hotel-rest/internal/handler"
 )
 
-func SetupRoutes(app *fiber.App, hotelHandler *handler.HotelHandler) {
-	// Hotel ile ilgili route'lar
+func SetupRoutes(app *fiber.App, hotelHandler *handler.HotelHandler, reviewHandler *handler.ReviewHandler) {
 	app.Get("/hotels", hotelHandler.GetAllHotels)
-	app.Get("/hotels/:id", hotelHandler.GetHotelByID)
-	app.Post("/hotels", hotelHandler.CreateHotel)
-	app.Put("/hotels/:id", hotelHandler.UpdateHotel)
-	app.Delete("/hotels/:id", hotelHandler.DeleteHotel)
+	app.Get("/hotel/:id", hotelHandler.GetHotelByID)
+	app.Post("/hotel", hotelHandler.CreateHotel)
+	app.Put("/hotel/:id", hotelHandler.UpdateHotel)
+	app.Delete("/hotel/:id", hotelHandler.DeleteHotel)
 
-	// Daha fazla route buraya eklenebilir
+	app.Get("/hotel/:id/reviews", reviewHandler.GetReviewsByHotel)
+	app.Post("/hotel/:id/reviews", reviewHandler.AddReview)
 }
