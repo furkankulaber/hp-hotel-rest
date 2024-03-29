@@ -69,9 +69,10 @@ func (s *hotelService) GetHotelByID(id uint) (model.HotelDetailResponse, error) 
 	var reviewResponses []model.ReviewResponse
 	for _, review := range hotel.Reviews {
 		reviewResponses = append(reviewResponses, model.ReviewResponse{
-			UserName: review.UserName,
-			Rating:   review.Rating,
-			Text:     review.Text,
+			UserName:  review.UserName,
+			Rating:    review.Rating,
+			Text:      review.Text,
+			CreatedAt: review.CreatedAt,
 		})
 	}
 

@@ -28,3 +28,5 @@ func LoadConfig() Config {
 		DBPort:     os.Getenv("DB_PORT"),
 	}
 }
+
+const Secret = "sdakhdkjahdkasjhdjgddkjgh"

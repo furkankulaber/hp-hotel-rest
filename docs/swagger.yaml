@@ -1,0 +1,400 @@
+basePath: /
+definitions:
+  model.CreateReviewRequest:
+    properties:
+      rating:
+        type: integer
+      text:
+        type: string
+      user_email:
+        type: string
+      user_name:
+        type: string
+    type: object
+  model.HotelDetailResponse:
+    properties:
+      amenities:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      id:
+        type: integer
+      location:
+        $ref: '#/definitions/model.LocationResponse'
+      name:
+        type: string
+      photos:
+        items:
+          type: string
+        type: array
+      rating:
+        type: number
+      reviews:
+        items:
+          $ref: '#/definitions/model.ReviewResponse'
+        type: array
+      rooms:
+        items:
+          $ref: '#/definitions/model.RoomResponse'
+        type: array
+      stars:
+        type: integer
+      type:
+        type: string
+    type: object
+  model.HotelListResponse:
+    properties:
+      id:
+        type: integer
+      location:
+        $ref: '#/definitions/model.LocationResponse'
+      name:
+        type: string
+      photos:
+        items:
+          type: string
+        type: array
+      rating:
+        type: number
+      stars:
+        type: integer
+      type:
+        type: string
+    type: object
+  model.LocationResponse:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      district:
+        type: string
+    type: object
+  model.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  model.ReviewResponse:
+    properties:
+      created_at:
+        type: string
+      rating:
+        type: integer
+      text:
+        type: string
+      user_name:
+        type: string
+    type: object
+  model.RoomResponse:
+    properties:
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  model.UpdateReviewRequest:
+    properties:
+      rating:
+        type: integer
+      text:
+        type: string
+      user_email:
+        type: string
+      user_name:
+        type: string
+    type: object
+  utils.APIResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample API for managing hotels and reviews.
+  title: HotelPro Hotel REST API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user with provided credentials and generate JWT token
+      parameters:
+      - description: User credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User logged in successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.APIResponse'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.APIResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/utils.APIResponse'
+      tags:
+      - auth
+  /auth/protected:
+    get:
+      consumes:
+      - application/json
+      description: A protected route that requires authentication
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Protected Route
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.APIResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      security:
+      - Bearer: []
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with the provided credentials
+      parameters:
+      - description: User credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User registered successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.APIResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIResponse'
+      tags:
+      - auth
+  /hotel/{hotelID}/reviews:
+    get:
+      consumes:
+      - application/json
+      description: Get reviews for a specific hotel
+      parameters:
+      - description: Hotel ID
+        in: path
+        name: hotelID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Reviews fetched successfully
+          schema:
+            items:
+              allOf:
+              - $ref: '#/definitions/utils.APIResponse'
+              - properties:
+                  data:
+                    items:
+                      $ref: '#/definitions/model.ReviewResponse'
+                    type: array
+                type: object
+            type: array
+        "400":
+          description: Invalid hotel ID
+          schema:
+            $ref: '#/definitions/utils.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIResponse'
+      summary: Get reviews by hotel ID
+      tags:
+      - reviews
+    post:
+      consumes:
+      - application/json
+      description: Add a new review for a specific hotel
+      parameters:
+      - description: Hotel ID
+        in: path
+        name: hotelID
+        required: true
+        type: integer
+      - description: Review request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Review added successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.ReviewResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIResponse'
+      summary: Add a new review
+      tags:
+      - reviews
+  /hotel/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get detail of hotel by its ID
+      parameters:
+      - description: Hotel ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hotel fetched successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.HotelDetailResponse'
+                  type: array
+              type: object
+        "400":
+          description: Invalid Hotel ID
+          schema:
+            $ref: '#/definitions/utils.APIResponse'
+        "404":
+          description: Hotel Not Found
+          schema:
+            $ref: '#/definitions/utils.APIResponse'
+      summary: Get a hotel by ID
+      tags:
+      - hotels
+  /hotel/reviews/{reviewID}:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing review
+      parameters:
+      - description: Review ID
+        in: path
+        name: reviewID
+        required: true
+        type: integer
+      - description: Review request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Review updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.ReviewResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIResponse'
+      summary: Update a review
+      tags:
+      - reviews
+  /hotels:
+    get:
+      consumes:
+      - application/json
+      description: get list of all hotels
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hotels fetched successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.HotelListResponse'
+                  type: array
+              type: object
+        "400":
+          description: Failed
+          schema:
+            $ref: '#/definitions/utils.APIResponse'
+      summary: Get all hotels
+      tags:
+      - hotels
+securityDefinitions:
+  Bearer:
+    description: '"Please using <b>Bearer: JWT</b>"'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

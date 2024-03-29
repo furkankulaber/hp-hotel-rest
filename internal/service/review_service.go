@@ -35,9 +35,10 @@ func (s *reviewService) AddReview(request *model.CreateReviewRequest, hotel *mod
 	}
 
 	response := &model.ReviewResponse{
-		UserName: createdReview.UserName,
-		Rating:   createdReview.Rating,
-		Text:     createdReview.Text,
+		UserName:  createdReview.UserName,
+		Rating:    createdReview.Rating,
+		Text:      createdReview.Text,
+		CreatedAt: createdReview.CreatedAt,
 	}
 
 	return response, nil
@@ -52,9 +53,10 @@ func (s *reviewService) GetReviewsByHotelID(hotelID uint) ([]model.ReviewRespons
 	var responses []model.ReviewResponse
 	for _, review := range reviews {
 		responses = append(responses, model.ReviewResponse{
-			UserName: review.UserName,
-			Rating:   review.Rating,
-			Text:     review.Text,
+			UserName:  review.UserName,
+			Rating:    review.Rating,
+			Text:      review.Text,
+			CreatedAt: review.CreatedAt,
 		})
 	}
 
@@ -75,9 +77,10 @@ func (s *reviewService) UpdateReview(id uint, req *model.UpdateReviewRequest) (*
 	updatedReview, _ := s.repo.UpdateReview(review)
 
 	return &model.ReviewResponse{
-		UserName: updatedReview.UserName,
-		Rating:   updatedReview.Rating,
-		Text:     updatedReview.Text,
+		UserName:  updatedReview.UserName,
+		Rating:    updatedReview.Rating,
+		Text:      updatedReview.Text,
+		CreatedAt: updatedReview.CreatedAt,
 	}, nil
 
 }

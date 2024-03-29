@@ -2,6 +2,7 @@ package model
 
 import (
 	"gorm.io/gorm"
+	"time"
 )
 
 type Review struct {
@@ -15,9 +16,10 @@ type Review struct {
 
 // DTO
 type ReviewResponse struct {
-	UserName string `json:"user_name"`
-	Rating   int    `json:"rating"`
-	Text     string `json:"text"`
+	UserName  string    `json:"user_name"`
+	Rating    int       `json:"rating"`
+	Text      string    `json:"text"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 type CreateReviewRequest struct {
