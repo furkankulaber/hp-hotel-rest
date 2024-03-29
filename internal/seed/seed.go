@@ -48,17 +48,17 @@ func Load(db *gorm.DB) {
 		for _, hotel := range hotels {
 			db.Create(&hotel)
 
-			for i := 1; i < gofakeit.Number(1, 10); i++ {
+			for i := 1; i < gofakeit.Number(2, 10); i++ {
 				review := model.Review{
 					UserName:  gofakeit.Name(),
 					UserEmail: gofakeit.Email(),
 					Text:      gofakeit.LoremIpsumSentence(10),
-					Score:     gofakeit.Number(0, 10),
+					Rating:    gofakeit.Number(0, 10),
 				}
 				db.Model(&hotel).Association("Reviews").Append(&review)
 			}
 
-			for i := 1; i < gofakeit.Number(1, 10); i++ {
+			for i := 1; i < gofakeit.Number(2, 10); i++ {
 				photos := model.Photo{
 					URL: gofakeit.URL(),
 				}

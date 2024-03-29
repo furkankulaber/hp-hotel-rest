@@ -29,7 +29,13 @@ func (r *hotelRepository) GetAll() ([]model.Hotel, error) {
 
 func (r *hotelRepository) GetByID(id uint) (model.Hotel, error) {
 	var hotel model.Hotel
-	result := r.DB.Preload("Location").Preload("Photos").Preload("Reviews").First(&hotel, id)
+	result := r.DB.
+		Preload("Location").
+		Preload("Photos").
+		Preload("Reviews").
+		Preload("Amenities").
+		Preload("Rooms").
+		First(&hotel, id)
 	return hotel, result.Error
 }
 

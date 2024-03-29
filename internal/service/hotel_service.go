@@ -73,7 +73,7 @@ func (s *hotelService) GetHotelByID(id uint) (model.HotelDetailResponse, error) 
 	for _, review := range hotel.Reviews {
 		reviewResponses = append(reviewResponses, model.ReviewResponse{
 			UserName: review.UserName,
-			Score:    review.Score,
+			Rating:   review.Rating,
 			Text:     review.Text,
 		})
 	}
@@ -83,19 +83,27 @@ func (s *hotelService) GetHotelByID(id uint) (model.HotelDetailResponse, error) 
 		photoURLs = append(photoURLs, photo.URL)
 	}
 
+	var amenities []string
+	for _, amenity := range hotel.Amenities {
+		amenities = append(amenities, amenity.Name)
+	}
+
 	return model.HotelDetailResponse{
-		ID:     hotel.ID,
-		Name:   hotel.Name,
-		Stars:  hotel.Stars,
-		Type:   hotel.Type,
-		Rating: rating,
+		ID:          hotel.ID,
+		Description: hotel.Description,
+		Name:        hotel.Name,
+		Stars:       hotel.Stars,
+		Type:        hotel.Type,
+		Rating:      rating,
 		Location: model.LocationResponse{
 			City:     hotel.Location.City,
 			District: hotel.Location.District,
 			Address:  hotel.Location.Address,
 		},
-		Rooms:   roomResponses,
-		Reviews: reviewResponses,
+		Amenities: amenities,
+		Rooms:     roomResponses,
+		Reviews:   reviewResponses,
+		Photos:    photoURLs,
 	}, nil
 }
 
