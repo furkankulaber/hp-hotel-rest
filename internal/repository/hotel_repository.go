@@ -38,18 +38,3 @@ func (r *hotelRepository) GetByID(id uint) (model.Hotel, error) {
 		First(&hotel, id)
 	return hotel, result.Error
 }
-
-func (r *hotelRepository) Create(hotel model.Hotel) (model.Hotel, error) {
-	result := r.DB.Create(&hotel)
-	return hotel, result.Error
-}
-
-func (r *hotelRepository) Update(hotel model.Hotel) (model.Hotel, error) {
-	result := r.DB.Save(&hotel)
-	return hotel, result.Error
-}
-
-func (r *hotelRepository) Delete(id uint) error {
-	result := r.DB.Delete(&model.Hotel{}, id)
-	return result.Error
-}

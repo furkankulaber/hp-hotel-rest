@@ -8,9 +8,6 @@ import (
 type HotelService interface {
 	GetAllHotels() ([]model.HotelListResponse, error)
 	GetHotelByID(id uint) (model.HotelDetailResponse, error)
-	CreateHotel(hotel model.Hotel) (model.Hotel, error)
-	UpdateHotel(hotel model.Hotel) (model.Hotel, error)
-	DeleteHotel(id uint) error
 }
 
 type hotelService struct {
@@ -105,16 +102,4 @@ func (s *hotelService) GetHotelByID(id uint) (model.HotelDetailResponse, error) 
 		Reviews:   reviewResponses,
 		Photos:    photoURLs,
 	}, nil
-}
-
-func (s *hotelService) CreateHotel(hotel model.Hotel) (model.Hotel, error) {
-	return s.repo.Create(hotel)
-}
-
-func (s *hotelService) UpdateHotel(hotel model.Hotel) (model.Hotel, error) {
-	return s.repo.Update(hotel)
-}
-
-func (s *hotelService) DeleteHotel(id uint) error {
-	return s.repo.Delete(id)
 }
