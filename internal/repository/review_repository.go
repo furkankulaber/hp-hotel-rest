@@ -6,17 +6,20 @@ import (
 )
 
 type ReviewRepository interface {
-	Create(review model.Review) (model.Review, error)
+	CreateReview(review *model.Review) (*model.Review, error)
 }
 
 type reviewRepository struct {
-	db *gorm.DB
+	DB *gorm.DB
 }
 
 func NewReviewRepository(db *gorm.DB) ReviewRepository {
-	return &reviewRepository{db: db}
+	return &reviewRepository{DB: db}
 }
 
-func (r *reviewRepository) Create(review model.Review) (model.Review, error) {
-	// Burada veritabanına review oluşturma işlemini gerçekleştir
+func (r *reviewRepository) CreateReview(review *model.Review) (*model.Review, error) {
+	if err := r.DB.Create(&review).Error; err != nil {
+		return nil, err
+	}
+	return review, nil
 }
