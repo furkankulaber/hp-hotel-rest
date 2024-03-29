@@ -8,6 +8,9 @@ import (
 type ReviewRepository interface {
 	CreateReview(review *model.Review) (*model.Review, error)
 	GetReviewsByHotelID(hotelId uint) ([]model.Review, error)
+	UpdateReview(review *model.Review) (*model.Review, error)
+	DeleteReview(id uint) error
+	FindReviewByID(id uint) (*model.Review, error)
 }
 
 type reviewRepository struct {
@@ -31,4 +34,27 @@ func (r *reviewRepository) GetReviewsByHotelID(hotelID uint) ([]model.Review, er
 		return nil, err
 	}
 	return reviews, nil
+}
+
+func (r *reviewRepository) UpdateReview(review *model.Review) (*model.Review, error) {
+	if err := r.DB.Save(review).Error; err != nil {
+		return nil, err
+	}
+	return review, nil
+}
+
+func (r *reviewRepository) DeleteReview(id uint) error {
+	if err := r.DB.Delete(&model.Review{}, id).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *reviewRepository) FindReviewByID(id uint) (*model.Review, error) {
+	var review model.Review
+	result := r.DB.First(&review, id)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &review, nil
 }

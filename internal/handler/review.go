@@ -50,3 +50,22 @@ func (h *ReviewHandler) GetReviewsByHotel(c *fiber.Ctx) error {
 
 	return utils.RespondJSON(c, fiber.StatusOK, "Reviews fetched successfully", reviews)
 }
+
+func (h *ReviewHandler) UpdateReview(c *fiber.Ctx) error {
+	var req model.UpdateReviewRequest
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Bad Request"})
+	}
+
+	reviewID, err := strconv.ParseUint(c.Params("id"), 10, 32)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid review ID"})
+	}
+
+	updatedReview, err := h.service.UpdateReview(uint(reviewID), &req)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Internal Server Error"})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(updatedReview)
+}

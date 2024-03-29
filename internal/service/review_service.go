@@ -8,6 +8,8 @@ import (
 type ReviewService interface {
 	AddReview(request *model.CreateReviewRequest, hotel *model.Hotel) (*model.ReviewResponse, error)
 	GetReviewsByHotelID(uint) ([]model.ReviewResponse, error)
+	UpdateReview(id uint, review *model.UpdateReviewRequest) (*model.ReviewResponse, error)
+	DeleteReview(id uint) error
 }
 
 type reviewService struct {
@@ -57,4 +59,29 @@ func (s *reviewService) GetReviewsByHotelID(hotelID uint) ([]model.ReviewRespons
 	}
 
 	return responses, nil
+}
+
+func (s *reviewService) UpdateReview(id uint, req *model.UpdateReviewRequest) (*model.ReviewResponse, error) {
+	review, err := s.repo.FindReviewByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	review.UserName = req.UserName
+	review.UserEmail = req.UserEmail
+	review.Rating = req.Rating
+	review.Text = req.Text
+
+	updatedReview, _ := s.repo.UpdateReview(review)
+
+	return &model.ReviewResponse{
+		UserName: updatedReview.UserName,
+		Rating:   updatedReview.Rating,
+		Text:     updatedReview.Text,
+	}, nil
+
+}
+
+func (s *reviewService) DeleteReview(id uint) error {
+	return s.repo.DeleteReview(id)
 }

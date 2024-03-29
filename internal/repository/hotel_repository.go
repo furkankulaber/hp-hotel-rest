@@ -8,9 +8,6 @@ import (
 type HotelRepository interface {
 	GetAll() ([]model.Hotel, error)
 	GetByID(id uint) (model.Hotel, error)
-	Create(hotel model.Hotel) (model.Hotel, error)
-	Update(hotel model.Hotel) (model.Hotel, error)
-	Delete(id uint) error
 }
 
 type hotelRepository struct {
