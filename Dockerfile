@@ -6,8 +6,9 @@ COPY go.mod ./
 COPY go.sum ./
 RUN go mod download
 
-COPY *.go ./
+COPY . .
 
-RUN go build -o /hp-hotel-rest
+RUN go build -o hp-hotel-rest ./cmd/main.go
 
-CMD [ "/hp-hotel-rest" ]
+# Uygulamanın çalıştırılması
+CMD ["./hp-hotel-rest"]
