@@ -19,3 +19,10 @@ type ReviewResponse struct {
 	Rating   int    `json:"rating"`
 	Text     string `json:"text"`
 }
+
+type CreateReviewRequest struct {
+	UserName  string `json:"user_name"`
+	UserEmail string `json:"user_email"`
+	Rating    int    `json:"rating"`
+	Text      string `json:"text"`
+}
