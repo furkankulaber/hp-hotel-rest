@@ -82,7 +82,7 @@ func Load(db *gorm.DB) {
 			}
 
 			var selectedAmenities []model.Amenity
-			db.Find(&selectedAmenities, "name IN (?)", []string{"Wi-Fi", "Havuz", "Spa"}) // Örnek olarak bazı amenities'leri seçiyoruz
+			db.Find(&selectedAmenities, "name IN (?)", []string{"Wi-Fi", "Havuz", "Spa"})
 
 			for _, amenity := range selectedAmenities {
 				db.Model(&hotel).Association("Amenities").Append(&amenity)

@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"hp-hotel-rest/internal/model"
 	"hp-hotel-rest/internal/service"
+	"hp-hotel-rest/pkg/utils"
 	"strconv"
 )
 
@@ -18,33 +19,34 @@ func NewReviewHandler(service service.ReviewService) *ReviewHandler {
 func (h *ReviewHandler) AddReview(c *fiber.Ctx) error {
 	var request model.CreateReviewRequest
 	if err := c.BodyParser(&request); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
+		return utils.RespondJSON(c, fiber.StatusBadRequest, "Bad Request", nil)
 	}
 
 	var hotel model.Hotel
-
-	id, _ := strconv.ParseUint(c.Params("id"), 10, 32)
+	id, err := strconv.ParseUint(c.Params("id"), 10, 32)
+	if err != nil {
+		return utils.RespondJSON(c, fiber.StatusBadRequest, "Invalid hotel ID", nil)
+	}
 	hotel.ID = uint(id)
 
 	newReview, err := h.service.AddReview(&request, &hotel)
-
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+		return utils.RespondJSON(c, fiber.StatusInternalServerError, "Internal Server Error", nil)
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(newReview)
+	return utils.RespondJSON(c, fiber.StatusCreated, "Review added successfully", newReview)
 }
 
 func (h *ReviewHandler) GetReviewsByHotel(c *fiber.Ctx) error {
-	hotelID, err := c.ParamsInt("idg")
+	hotelID, err := c.ParamsInt("id")
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid hotel ID"})
+		return utils.RespondJSON(c, fiber.StatusBadRequest, "Invalid hotel ID", nil)
 	}
 
 	reviews, err := h.service.GetReviewsByHotelID(uint(hotelID))
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Could not retrieve reviews"})
+		return utils.RespondJSON(c, fiber.StatusInternalServerError, "Could not retrieve reviews", nil)
 	}
 
-	return c.JSON(reviews)
+	return utils.RespondJSON(c, fiber.StatusOK, "Reviews fetched successfully", reviews)
 }
