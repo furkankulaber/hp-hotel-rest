@@ -120,7 +120,7 @@ host: localhost:8080
 info:
   contact: {}
   description: This is a sample API for managing hotels and reviews.
-  title: HotelPro Hotel REST API
+  title: HotelStore Hotel REST API
   version: "1.0"
 paths:
   /auth/login:

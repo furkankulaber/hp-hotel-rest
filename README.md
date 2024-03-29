@@ -1,4 +1,4 @@
-# HotelPro REST API
+# HotelStore REST API
 
 This is a sample REST API for managing hotels and reviews.
 
@@ -35,7 +35,6 @@ You can run the project with Docker. Make sure you have Docker and Docker Compos
 1. Build and Start the Docker image:
    ```
    docker-compose up -d
-
 ### Running without Docker
 
 If you prefer not to use Docker, you can run the project directly:
@@ -46,7 +45,6 @@ If you prefer not to use Docker, you can run the project directly:
 2. Start the application:
    ```
    go run cmd/main.go or air
-
 ## API Documentation
 
 You can access the Swagger documentation for the API at http://localhost:8080/swagger/index.html after starting the application.

@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "description": "This is a sample API for managing hotels and reviews.",
-        "title": "HotelPro Hotel REST API",
+        "title": "HotelStore Hotel REST API",
         "contact": {},
         "version": "1.0"
     },

@@ -658,7 +658,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8080",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "HotelPro Hotel REST API",
+	Title:            "HotelStore Hotel REST API",
 	Description:      "This is a sample API for managing hotels and reviews.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

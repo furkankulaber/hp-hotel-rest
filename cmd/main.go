@@ -19,7 +19,7 @@ import (
 	"hp-hotel-rest/pkg/config"
 )
 
-// @title HotelPro Hotel REST API
+// @title HotelStore Hotel REST API
 // @description This is a sample API for managing hotels and reviews.
 // @version 1.0
 // @host localhost:8080
